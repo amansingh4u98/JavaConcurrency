@@ -1,6 +1,6 @@
 # Java Concurrency Examples
 
-This folder contains small Java examples showing the difference between `volatile`, `synchronized`, and `ReentrantLock`.
+This folder contains small Java examples showing the difference between `volatile`, `synchronized`, `ReentrantLock`, `ExecutorService`, and `ForkJoinPool`.
 
 ## Files
 
@@ -21,6 +21,12 @@ This folder contains small Java examples showing the difference between `volatil
 
 - `TryLockExample.java`
   Shows how `tryLock()` can avoid blocking when a lock is unavailable.
+
+- `ExecutorServiceExample.java`
+  Shows a fixed thread pool running independent tasks with `ExecutorService`.
+
+- `ForkJoinPoolExample.java`
+  Shows a divide-and-conquer sum using `ForkJoinPool`.
 
 ## When to use what
 
@@ -74,11 +80,41 @@ Good for:
 - Situations where blocking forever is undesirable
 - Complex locking workflows
 
+## `ExecutorService`
+
+Use `ExecutorService` when:
+
+- You have independent tasks to run in a pool
+- You want to manage a fixed or reusable set of worker threads
+- Tasks may block or do general-purpose background work
+
+Good for:
+
+- Request processing
+- Background jobs
+- Running `Callable` and `Runnable` tasks
+
+## `ForkJoinPool`
+
+Use `ForkJoinPool` when:
+
+- The task can be split into smaller subtasks
+- The work is CPU-bound
+- You want recursive parallelism with work-stealing
+
+Good for:
+
+- Parallel sums
+- Tree traversal
+- Divide-and-conquer algorithms
+
 ## Quick summary
 
 - `volatile` = visibility only
 - `synchronized` = visibility + mutual exclusion
 - `ReentrantLock` = visibility + mutual exclusion + advanced lock features
+- `ExecutorService` = general-purpose task execution
+- `ForkJoinPool` = divide-and-conquer parallel execution
 
 ## Compile
 
@@ -97,6 +133,8 @@ java SynchronizedExample
 java SynchronizedBlockExample
 java ReentrantLockExample
 java TryLockExample
+java ExecutorServiceExample
+java ForkJoinPoolExample
 ```
 
 ## Expected behavior
@@ -115,3 +153,9 @@ java TryLockExample
 
 - `TryLockExample`:
   One thread may acquire the lock while another may fail immediately.
+
+- `ExecutorServiceExample`:
+  Three submitted tasks run on the thread pool and print their worker thread names.
+
+- `ForkJoinPoolExample`:
+  The array is split into smaller ranges and the final printed sum should be `36`.
